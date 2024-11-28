@@ -20,6 +20,7 @@ class SoftmaxClassifier(LogisticRegression):
         ##############################
         ###     YOUR CODE HERE     ###
         ##############################
+        scores =  X @ self.parameters
         return scores
     
     def predict_labels(self, X: np.array) -> np.array:
@@ -35,6 +36,8 @@ class SoftmaxClassifier(LogisticRegression):
         ##############################
         ###     YOUR CODE HERE     ###
         ##############################
+        probs = softmax(self.predict(X))
+        preds = np.argmax(probs, axis=1)
         return preds
     
     @staticmethod
@@ -52,6 +55,9 @@ class SoftmaxClassifier(LogisticRegression):
         ##############################
         ###     YOUR CODE HERE     ###
         ##############################
+        cross_entropy = - np.sum(y_onehot * np.log(preds))
+        #loss = cross_entropy / preds.shape[0]
+        loss = np.exp(-cross_entropy)
         return loss
     
     def update_theta(self, gradient:np.array, lr:float=0.5):
@@ -68,7 +74,9 @@ class SoftmaxClassifier(LogisticRegression):
         ##############################
         ###     YOUR CODE HERE     ###
         ##############################
-        pass
+        self.parameters -= lr * gradient
+        
+        
     
     @staticmethod
     def compute_gradient(x: np.array, y : np.array, preds: np.array) -> np.array:
@@ -86,6 +94,8 @@ class SoftmaxClassifier(LogisticRegression):
         ##############################
         ###     YOUR CODE HERE     ###
         ##############################
+        # jacobian = -np.sum(x.T @ (y - preds)) / x.shape[0]
+        jacobian = -np.dot(x.T , (preds - y)) / x.shape[0]
         return jacobian
     
     

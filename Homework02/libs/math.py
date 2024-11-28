@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def sigmoid(x):
     """
     Function to compute the sigmoid of a given input x.
@@ -11,9 +10,7 @@ def sigmoid(x):
     Returns:
         g: The sigmoid of the input x
     """
-    ##############################
-    ###     YOUR CODE HERE     ###
-    ##############################    
+    g = 1 / (1 + np.exp(-x))
     return g
 
 def softmax(y):
@@ -29,5 +26,13 @@ def softmax(y):
     ##############################
     ###     YOUR CODE HERE     ###
     ##############################
-    return softmax_scores
+    y_max = np.max(y, axis=1, keepdims=True)
+    y_stable = y - y_max
+    
+    # Compute the exponentials of the stabilized scores
+    exp_scores = np.exp(y_stable)
+    
+    # Compute the softmax scores
+    softmax_scores = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
 
+    return softmax_scores

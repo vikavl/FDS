@@ -8,7 +8,7 @@ class LogisticRegressionPenalized(LogisticRegression):
     
     def update_theta(self, gradient: np.array, lr: float = 0.5):
         """
-        Function to update the weights in-place.
+        Function to update the weights in-place with L2 regularization.
 
         Args:
             gradient: the gradient of the log likelihood.
@@ -17,8 +17,9 @@ class LogisticRegressionPenalized(LogisticRegression):
         Returns:
             None
         """
-        ##############################
-        ###     YOUR CODE HERE     ###
-        ##############################
-        pass
-    
+        # Apply the L2 regularization term to the gradient
+        regularization_term = self.lambda_ * self.parameters
+        regularization_term[0] = 0  # Do not regularize the bias term
+        
+        # Update the parameters with the gradient and regularization
+        self.parameters += lr * (gradient - regularization_term)
